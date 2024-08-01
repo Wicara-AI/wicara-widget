@@ -44,7 +44,7 @@ export default function BubbleChat({appKey, clientId, clientSecret}: BubbleChatP
         },
       });
     };
-  }, [appKey]);
+  }, [appKey, clientId, clientSecret]);
 
   return (
     <div>

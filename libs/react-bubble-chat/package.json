@@ -1,6 +1,8 @@
 {
   "name": "@wicara/react-bubble-chat",
   "version": "0.0.1",
+  "access": "public",
+  "description": "A simple chat bubble component for React",
   "main": "./index.js",
   "types": "./index.d.ts",
   "exports": {

@@ -7,6 +7,7 @@ export type AuthenticationHeader = {
   sessionId: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ResponseSuccess<TData = any> = {
   status: "success";
   message: string;
@@ -18,6 +19,7 @@ export type ResponseError = {
   message: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ApiResponse<TData = any> = ResponseSuccess<TData> | ResponseError;
 
 export type GetThemeResponseData = Theme;

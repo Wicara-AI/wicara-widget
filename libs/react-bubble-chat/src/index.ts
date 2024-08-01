@@ -1,1 +1,1 @@
-export * from './lib/react-bubble-chat';
+export * from './lib/BubbleChat';
