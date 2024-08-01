@@ -22,11 +22,7 @@ export type ApiResponse<TData = any> = ResponseSuccess<TData> | ResponseError;
 
 export type GetThemeResponseData = Theme;
 
-export type CommonRequest = {
-  apiKey: string;
-  clientId: string;
-  clientSecret: string;
-  sessionId: string;
+export type CommonRequest = AuthenticationHeader & {
   signal: AbortSignal;
 };
 
