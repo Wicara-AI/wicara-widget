@@ -1,0 +1,23 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@wicara/bubble-chat": ["libs/bubble-chat/src/index.ts"],
+      "@wicara/react-bubble-chat": ["libs/react-bubble-chat/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

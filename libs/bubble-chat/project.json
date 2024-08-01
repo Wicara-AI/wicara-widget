@@ -1,0 +1,32 @@
+{
+  "name": "bubble-chat",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/bubble-chat/src",
+  "projectType": "library",
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "dist\\{projectRoot}",
+        "currentVersionResolver": "git-tag"
+      }
+    }
+  },
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/bubble-chat",
+        "main": "libs/bubble-chat/src/index.ts",
+        "tsConfig": "libs/bubble-chat/tsconfig.lib.json",
+        "assets": ["libs/bubble-chat/*.md"]
+      }
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist\\{projectRoot}"
+      }
+    }
+  }
+}

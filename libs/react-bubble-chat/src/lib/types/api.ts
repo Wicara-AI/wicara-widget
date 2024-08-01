@@ -1,0 +1,33 @@
+import { Theme } from "./theme";
+
+export type AuthenticationHeader = {
+  apiKey: string;
+  clientId: string;
+  clientSecret: string;
+  sessionId: string;
+};
+
+export type ResponseSuccess<TData = any> = {
+  status: "success";
+  message: string;
+  data: TData;
+};
+
+export type ResponseError = {
+  status: "fail";
+  message: string;
+};
+
+export type ApiResponse<TData = any> = ResponseSuccess<TData> | ResponseError;
+
+export type GetThemeResponseData = Theme;
+
+export type CommonRequest = {
+  apiKey: string;
+  clientId: string;
+  clientSecret: string;
+  sessionId: string;
+  signal: AbortSignal;
+};
+
+export type GetThemeRequest = CommonRequest;

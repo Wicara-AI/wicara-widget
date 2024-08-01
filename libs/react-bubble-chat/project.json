@@ -1,0 +1,9 @@
+{
+  "name": "react-bubble-chat",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/react-bubble-chat/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project react-bubble-chat --web",
+  "targets": {}
+}
