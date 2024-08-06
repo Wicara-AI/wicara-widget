@@ -1,0 +1,30 @@
+/* button absolute  */
+.button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #c32121;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  position: fixed;
+
+  /* position to bottom right */
+  right: 1rem;
+  bottom: 2rem;
+}
+
+.button:hover {
+  background-color: #a71b1b;
+}
+
+.button:focus {
+  outline: none;
+}
+
+.button:active {
+  background-color: #8f1515;
+}
+
+

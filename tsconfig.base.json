@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@wicara/bubble-chat": ["libs/bubble-chat/src/index.ts"],
-      "@wicara/react-bubble-chat": ["libs/react-bubble-chat/src/index.ts"]
+      "@wicara/react-bubble-chat": ["libs/react-bubble-chat/src/index.ts"],
+      "@wicara/shared/bubble-chat": ["libs/shared/bubble-chat/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

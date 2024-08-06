@@ -1,0 +1,58 @@
+
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+.dialog {
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  /* modern modal transition */
+  animation: fadeIn 0.3s ease-out;
+  z-index: 1000;
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.dialog::backdrop {
+  background-color: transparent;
+}
+
+
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}

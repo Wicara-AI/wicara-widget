@@ -1,1 +1,1 @@
-export * from './lib/BubbleChat';
+export {BubbleChat, BubbleChatProps} from './lib/BubbleChat';

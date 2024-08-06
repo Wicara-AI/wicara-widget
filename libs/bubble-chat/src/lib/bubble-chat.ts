@@ -1,13 +1,29 @@
-interface BubbleChatProps {
-  container: HTMLElement;
-  appKey: string;
+import { BubbleChat } from '@wicara/shared/bubble-chat';
+import React = require('react');
+import { createRoot } from 'react-dom/client';
+
+declare global {
+  interface Window {
+    BubbleChat: typeof BubbleChat;
+    renderBubbleChat: (elementId: string, config: RenderBubbleChatConfig) => void;
+  }
+}
+
+window.BubbleChat = BubbleChat;
+
+// Function to render the component in a specific DOM element with a specified color
+export interface RenderBubbleChatConfig {
   clientId: string;
   clientSecret: string;
-};
-
-export function bubbleChat({container}: BubbleChatProps) {
-  // get session id from cookie via window object
-  const sessionId = document.cookie ? document.cookie.split('; ').find(row => row.startsWith('sessionId'))?.split('=')[1] : '';
-
-  
+  appKey: string;
 }
+
+window.renderBubbleChat = (elementId: string, config: RenderBubbleChatConfig) => {
+  const container = document.getElementById(elementId);
+  if (!container) {
+    console.error(`Element with id ${elementId} not found`);
+    return;
+  }
+  const root = createRoot(container);
+  root.render(React.createElement(BubbleChat, { appKey: config.appKey, clientId: config.clientId, clientSecret: config.clientSecret }));
+};

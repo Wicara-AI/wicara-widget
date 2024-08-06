@@ -1,0 +1,9 @@
+{
+  "name": "example-bubble-chat-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/example/bubble-chat-e2e/src",
+  "implicitDependencies": ["example-bubble-chat"],
+  "// targets": "to see all targets run: nx show project example-bubble-chat-e2e --web",
+  "targets": {}
+}
