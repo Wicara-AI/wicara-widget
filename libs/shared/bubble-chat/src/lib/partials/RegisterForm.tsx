@@ -5,6 +5,7 @@ import { FormGroup, FormLabel } from '../components/inputs/FormGroup'
 import { useForm } from '../hooks/useForm'
 import { useEffect, useState } from 'react'
 import { registerUser } from '../utilities/api'
+import { useSession } from '../hooks/useSession'
 
 interface RegisterFormDto {
   email: string
@@ -18,6 +19,7 @@ export default function RegisterForm() {
       name: '',
     },
   });
+  const session = useSession();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -32,10 +34,12 @@ export default function RegisterForm() {
       const controller = new AbortController()
       const signal = controller.signal;
       (async () => {
-        await registerUser({
+        const data = await registerUser({
           email: form.values.email,
           name: form.values.name,
-        }, signal)
+        }, signal);
+
+        session.
       })()
 
       return () => {
