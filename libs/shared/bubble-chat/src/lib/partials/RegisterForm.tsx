@@ -3,6 +3,8 @@ import TextInput from '../components/inputs/TextInput'
 import styles from './register-form.module.css'
 import { FormGroup, FormLabel } from '../components/inputs/FormGroup'
 import { useForm } from '../hooks/useForm'
+import { useEffect, useState } from 'react'
+import { registerUser } from '../utilities/api'
 
 interface RegisterFormDto {
   email: string
@@ -15,11 +17,33 @@ export default function RegisterForm() {
       email: '',
       name: '',
     },
-  })
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = (data: RegisterFormDto) => {
-    console.log(data)
-  }
+    setIsSubmitting(true);
+  };
+
+  // request to register user using useEffect hook triggered by handleSubmit implement signal to prevent memory leak
+  useEffect(() => {
+    if (isSubmitting) {
+      setIsSubmitting(false);
+      const controller = new AbortController()
+      const signal = controller.signal;
+      (async () => {
+        await registerUser({
+          email: form.values.email,
+          name: form.values.name,
+        }, signal)
+      })()
+
+      return () => {
+        controller.abort()
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSubmitting])
 
   return (
     <form onSubmit={form.handleSubmit(handleSubmit)}>
