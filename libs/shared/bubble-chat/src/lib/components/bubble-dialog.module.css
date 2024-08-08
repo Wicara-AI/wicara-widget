@@ -10,12 +10,13 @@
 }
 
 .dialog {
-  border-radius: 10px;
+  /* pisition the dialog is still visible event srolling */
+  position: fixed;
+  max-width: 20vw;
+  min-width: 10vw;
   background-color: white;
+  border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  /* modern modal transition */
-  animation: fadeIn 0.3s ease-out;
-  z-index: 1000;
 }
 
 
@@ -30,12 +31,14 @@
   }
 }
 
+.dialog-title {
+  font-size: 1rem;
+  font-weight: bold;
+}
 
 .dialog::backdrop {
   background-color: transparent;
 }
-
-
 
 .dialog-content {
   display: flex;
@@ -45,9 +48,14 @@
 
 .dialog-header {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
-  align-items: center;
-  padding: 10px;
+}
+
+.dialog-header-container {
+  /* padding horizontal and vertical */
+  padding: 5px 10px;
+  background-color: antiquewhite;
 }
 
 .dialog-footer {

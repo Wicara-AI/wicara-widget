@@ -1,10 +1,9 @@
-import { forwardRef, ForwardRefExoticComponent, HtmlHTMLAttributes, PropsWithChildren, Ref, RefAttributes } from "react";
+import { forwardRef, HtmlHTMLAttributes, PropsWithChildren, PropsWithRef, Ref } from "react";
 import styles from "./bubble-dialog.module.css";
-
 
 export const BubbleDialogContent = forwardRef(({children, ...props}: PropsWithChildren<HtmlHTMLAttributes<HTMLDivElement>>, ref: Ref<HTMLDivElement>) => {
   return (
-    <div ref={ref} {...props} className={styles.dialogContent}>
+    <div ref={ref} {...props} className={styles['dialog-content']}>
       {children}
     </div>
   );
@@ -12,15 +11,17 @@ export const BubbleDialogContent = forwardRef(({children, ...props}: PropsWithCh
 
 export const BubbleDialogHeader = forwardRef(({children, ...props}: PropsWithChildren<HtmlHTMLAttributes<HTMLDivElement>>, ref: Ref<HTMLDivElement>) => {
   return (
-    <div ref={ref} {...props} className={styles.dialogHeader}>
-      {children}
+    <div ref={ref} {...props} className={styles['dialog-header-container']}>
+      <div className={styles['dialog-header']}>
+        {children}
+      </div>
     </div>
   );
 });
 
 export const BubbleDialogFooter = forwardRef(({children, ...props}: PropsWithChildren<HtmlHTMLAttributes<HTMLDivElement>>, ref: Ref<HTMLDivElement>) => {
   return (
-    <div ref={ref} {...props} className={styles.dialogFooter}>
+    <div ref={ref} {...props} className={styles['dialog-footer']}>
       {children}
     </div>
   );
@@ -28,32 +29,36 @@ export const BubbleDialogFooter = forwardRef(({children, ...props}: PropsWithChi
 
 export const BubbleDialogButtonClose = forwardRef(({children, ...props}: PropsWithChildren<HtmlHTMLAttributes<HTMLButtonElement>>, ref: Ref<HTMLButtonElement>) => {
   return (
-    <button ref={ref} {...props} className={styles.dialogClose}>
+    <button ref={ref} {...props} className={styles['dialog-close']}>
       {children}
     </button>
   );
 });
 
-interface BubbleDialogComponent extends ForwardRefExoticComponent<HtmlHTMLAttributes<HTMLDialogElement> & RefAttributes<HTMLDialogElement>> {
-  Footer: typeof BubbleDialogFooter;
-  Header: typeof BubbleDialogHeader;
-  Content: typeof BubbleDialogContent;
-  ButtonClose: typeof BubbleDialogButtonClose;
-}
-
-const BubbleDialog = forwardRef(({children, ...props}: PropsWithChildren<HtmlHTMLAttributes<HTMLDialogElement>>, ref: Ref<HTMLDialogElement>) => {
+export const BubbleDialogTitle = forwardRef(({children, ...props}: PropsWithChildren<HtmlHTMLAttributes<HTMLDivElement>>, ref: Ref<HTMLDivElement>) => {
   return (
-    <dialog ref={ref} {...props} className={styles.dialog}>
-      <div className={styles.dialogContainer}>
+    <h4 ref={ref} {...props} className={styles['dialog-title']}>
+      {children}
+    </h4>
+  );
+});
+
+export type BubbleDialogProps = PropsWithRef<HtmlHTMLAttributes<HTMLDivElement>> & {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+};
+
+export type BubbleDialogRef = HTMLDivElement;
+
+const BubbleDialog = forwardRef(({children, open = false, onOpenChange, ...props}: PropsWithChildren<BubbleDialogProps>, ref: Ref<BubbleDialogRef>) => {
+  console.log('open', open);
+  return (
+    <div ref={ref} {...props} className={styles['dialog']} style={{display: open ? 'block' : 'none'}}>
+      <div className={styles['dialogContainer']}>
         {children}
       </div>
-    </dialog>
+    </div>
   );
-}) as BubbleDialogComponent;
-
-BubbleDialog.Footer = BubbleDialogFooter;
-BubbleDialog.Header = BubbleDialogHeader;
-BubbleDialog.Content = BubbleDialogContent;
-BubbleDialog.ButtonClose = BubbleDialogButtonClose;
+});
 
 export default BubbleDialog;

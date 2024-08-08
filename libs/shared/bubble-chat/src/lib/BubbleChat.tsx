@@ -1,9 +1,10 @@
-import { HtmlHTMLAttributes, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { RootProvider } from "./context/RootContext";
 import { Theme } from "./types/theme";
 import { getThemeFromClient } from "./utils/api";
-import BubbleButton from "./components/BubbleButton";
-import BubbleDialog, { BubbleDialogButtonClose, BubbleDialogContent, BubbleDialogHeader } from "./components/BubbleDialog";
+import BubbleButton, { BubbleButtonRef } from "./components/BubbleButton";
+import BubbleDialog, { BubbleDialogButtonClose, BubbleDialogContent, BubbleDialogHeader, BubbleDialogRef, BubbleDialogTitle } from "./components/BubbleDialog";
+import RegisterForm from "./partials/RegisterForm";
 
 export interface BubbleChatProps {
   appKey: string;
@@ -13,8 +14,9 @@ export interface BubbleChatProps {
 
 export function BubbleChat({appKey, clientId, clientSecret}: BubbleChatProps) {
   const sessionId = document.cookie.replace(/(?:(?:^|.*;\s*)sessionId\s*=\s*([^;]*).*$)|^.*$/, "$1");
-  const bubbleDialogRef = useRef<HTMLDialogElement>(null);
-  const bubbleButtonRef = useRef<HTMLButtonElement>(null);
+  const [isOpenDialogChat, setIsOpenDialogChat] = useState(false);
+  const dialogChatRef  = useRef<BubbleDialogRef>(null);
+  const buttonChatRef = useRef<BubbleButtonRef>(null);
 
   const [theme, setTheme] = useState<Theme>({
     primaryColor: '#000000',
@@ -28,16 +30,19 @@ export function BubbleChat({appKey, clientId, clientSecret}: BubbleChatProps) {
   });
 
   const showDialog = () => {
-    if (bubbleDialogRef.current && bubbleButtonRef.current) {
-      const buttonRect = bubbleButtonRef.current.getBoundingClientRect();
-      bubbleDialogRef.current.style.top = `${buttonRect.top + bubbleDialogRef.current.offsetHeight - 160}px`;
-      bubbleDialogRef.current.style.left = `${buttonRect.left - bubbleDialogRef.current.offsetWidth - 120}px`;
-      bubbleDialogRef.current.showModal();
+    if (dialogChatRef?.current && buttonChatRef?.current) {
+      console.log('kesini 2');
+      const buttonRect = buttonChatRef.current.getBoundingClientRect();
+      // the dialog will be placed on the top right of the button and still visible on the screen
+      dialogChatRef.current.style.top = `${buttonRect.top - 200}px`;
+      dialogChatRef.current.style.left = `${buttonRect.right - 310}px`;
+      console.log('kesini');
+      setIsOpenDialogChat((open) => !open);
     }
   };
 
   const closeDialog = () => {
-    if (bubbleDialogRef.current) bubbleDialogRef.current.close();
+    setIsOpenDialogChat(false);
   };
 
   // i want to get theme from api and handle it using useeffect with signal to prevent memory leak
@@ -63,35 +68,22 @@ export function BubbleChat({appKey, clientId, clientSecret}: BubbleChatProps) {
     };
   }, [appKey, clientId, clientSecret]);
 
-  useEffect(() => {
-    const handleClickOutside = (event: any) => {
-      if (bubbleDialogRef.current && !bubbleDialogRef.current.contains(event.target) && event.target !== bubbleButtonRef.current) {
-        event.stopPropagation();
-      }
-    };
-
-    document.addEventListener('click', handleClickOutside, true);
-    return () => {
-      document.removeEventListener('click', handleClickOutside, true);
-    };
-  }, []);
-
   return (
     <div>
       <RootProvider theme={theme} setTheme={setTheme}>
-        <BubbleButton ref={bubbleButtonRef} onClick={showDialog}>
+        <BubbleButton ref={buttonChatRef} onClick={showDialog}>
           <span>Chat</span>
         </BubbleButton>
-        <BubbleDialog ref={bubbleDialogRef}>
-          <BubbleDialog.Header>
-            <span>Chat</span>
-          </BubbleDialog.Header>
-          <BubbleDialog.Content>
-            <span>Chat Content</span>
+        <BubbleDialog ref={dialogChatRef} open={isOpenDialogChat}>
+          <BubbleDialogHeader>
+            <BubbleDialogTitle>Wicara</BubbleDialogTitle>
+          </BubbleDialogHeader>
+          <BubbleDialogContent>
+            <RegisterForm />
             <BubbleDialogButtonClose onClick={closeDialog}>
               Close
             </BubbleDialogButtonClose>
-          </BubbleDialog.Content>
+          </BubbleDialogContent>
         </BubbleDialog>
       </RootProvider>
     </div>

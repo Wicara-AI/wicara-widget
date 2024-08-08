@@ -1,5 +1,5 @@
 {
-  "name": "@wicara/bubble-chat",
+  "name": "@wicara.ai/bubble-chat",
   "version": "0.0.1",
   "dependencies": {},
   "main": "./index.js",

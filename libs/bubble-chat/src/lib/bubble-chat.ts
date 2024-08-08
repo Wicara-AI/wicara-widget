@@ -1,5 +1,5 @@
 import { BubbleChat } from '@wicara/shared/bubble-chat';
-import React = require('react');
+import { createElement } from 'react';
 import { createRoot } from 'react-dom/client';
 
 declare global {
@@ -25,5 +25,5 @@ window.renderBubbleChat = (elementId: string, config: RenderBubbleChatConfig) =>
     return;
   }
   const root = createRoot(container);
-  root.render(React.createElement(BubbleChat, { appKey: config.appKey, clientId: config.clientId, clientSecret: config.clientSecret }));
+  root.render(createElement(BubbleChat, { appKey: config.appKey, clientId: config.clientId, clientSecret: config.clientSecret }));
 };
