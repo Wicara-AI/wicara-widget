@@ -1,4 +1,4 @@
-import { ApiResponse, ResponseSuccess } from "../types/api";
+import { ApiResponse } from "../types/api";
 import { BaseApiRequest } from "./baseApi";
 
 export type RegisterUserRequest = {
