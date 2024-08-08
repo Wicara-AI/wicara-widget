@@ -38,8 +38,6 @@ export default function RegisterForm() {
           email: form.values.email,
           name: form.values.name,
         }, signal);
-
-        session.
       })()
 
       return () => {
