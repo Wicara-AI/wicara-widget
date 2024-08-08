@@ -1,4 +1,3 @@
-
 .dialog-container {
   display: flex;
   flex-direction: column;
@@ -10,20 +9,21 @@
 }
 
 .dialog {
-  /* pisition the dialog is still visible event srolling */
   position: fixed;
   max-width: 20vw;
   min-width: 10vw;
+  bottom: 12dvh;
+  right: 1dvw;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  animation: fadeUp 0.5s ease;
 }
 
-
-@keyframes fadeIn {
+@keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -34,6 +34,7 @@
 .dialog-title {
   font-size: 1rem;
   font-weight: bold;
+  color: #f6f6f6;
 }
 
 .dialog::backdrop {
@@ -44,18 +45,22 @@
   display: flex;
   flex-direction: column;
   padding: 10px;
+  height: 30vh;
+  max-height: 50vh;
+  padding: 10px;
 }
 
 .dialog-header {
   display: flex;
+  border-radius: 10px 10px 0 0;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+  background-color: #1c82ad;
+  padding: 10px;
 }
 
 .dialog-header-container {
-  /* padding horizontal and vertical */
-  padding: 5px 10px;
-  background-color: antiquewhite;
 }
 
 .dialog-footer {
@@ -63,4 +68,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px;
+}
+
+.dialog-close {
+  cursor: pointer;
+  background-color: transparent;
+  border-radius: 100%;
+  height: 30px;
+  width: 30px;
+  transition: background-color 0.1s;
+  color: #f6f6f6;
+}
+
+.dialog-close:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }
