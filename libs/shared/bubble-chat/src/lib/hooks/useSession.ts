@@ -15,11 +15,11 @@ export const useSession = () => {
   }
 
   const generateSessionIfNotAvailable = () => {
-    const session = getSessionFromCookie()
+    const session = getSessionFromCookie();
     if (!session) {
-      const newSession = generateSession()
-      setSessionToCookie(newSession)
-      return newSession
+      const newSession = generateSession();
+      setSessionToCookie(newSession);
+      return newSession;
     }
   }
 
