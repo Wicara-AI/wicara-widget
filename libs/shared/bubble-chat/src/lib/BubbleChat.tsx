@@ -11,6 +11,7 @@ import BubbleDialog, {
   BubbleDialogTitle,
 } from './components/BubbleDialog'
 import RegisterForm from './partials/RegisterForm'
+import { useSession } from './hooks/useSession'
 
 export interface BubbleChatProps {
   appKey: string
@@ -30,6 +31,7 @@ export function BubbleChat({
   const [isOpenDialogChat, setIsOpenDialogChat] = useState(false)
   const dialogChatRef = useRef<BubbleDialogRef>(null)
   const buttonChatRef = useRef<BubbleButtonRef>(null)
+  const session = useSession()
 
   const [theme, setTheme] = useState<Theme>({
     primaryColor: '#000000',
@@ -80,6 +82,11 @@ export function BubbleChat({
       })
     }
   }, [appKey, clientId, clientSecret])
+
+  useEffect(() => {
+    session.generateSessionIfNotAvailable()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div>

@@ -18,33 +18,37 @@ export default function RegisterForm() {
       email: '',
       name: '',
     },
-  });
-  const session = useSession();
+  })
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const session = useSession()
+
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = (data: RegisterFormDto) => {
-    setIsSubmitting(true);
-  };
+    setIsSubmitting(true)
+  }
 
   // request to register user using useEffect hook triggered by handleSubmit implement signal to prevent memory leak
   useEffect(() => {
     if (isSubmitting) {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
       const controller = new AbortController()
-      const signal = controller.signal;
-      (async () => {
-        const data = await registerUser({
-          email: form.values.email,
-          name: form.values.name,
-        }, signal);
+      const signal = controller.signal
+      ;(async () => {
+        const data = await registerUser(
+          {
+            email: form.values.email,
+            name: form.values.name,
+          },
+          signal,
+        )
       })()
 
       return () => {
         controller.abort()
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSubmitting])
 
   return (
