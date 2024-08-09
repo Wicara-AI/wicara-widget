@@ -10,8 +10,9 @@
 
 .dialog {
   position: fixed;
-  max-width: 20vw;
-  min-width: 10vw;
+  max-width: 300px;
+  min-width: 300px;
+  height: 400px;
   bottom: 12dvh;
   right: 1dvw;
   background-color: white;
