@@ -62,7 +62,7 @@ export function BubbleChat({
           apiKey: appKey,
           clientId,
           clientSecret,
-          sessionId: '',
+          sessionId: sessionId,
           signal,
         }),
       )

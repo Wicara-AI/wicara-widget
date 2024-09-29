@@ -11,15 +11,16 @@ export function fetchInit(input: RequestInfo | URL, init?: RequestInit & {
       ...init?.headers,
       "Content-Type": "application/json",
       "X-API-KEY": init?.headers.apiKey,
-      "X-CLIENT-ID": init?.headers.clientId,
-      "X-CLIENT-SECRET": init?.headers.clientSecret,
+      "X-APP-ID": init?.headers.clientId,
+      "X-API-SECRET": init?.headers.clientSecret,
       "X-SESSION-ID": init?.headers.sessionId,
     },
+    credentials: 'include',
   } as RequestInit);
 }
 
 export async function getThemeFromClient({apiKey, clientId, clientSecret, sessionId, signal}: GetThemeRequest): Promise<GetThemeResponseData> {
-  const response = await fetchInit(`${baseUrl}/theme`, {
+  const response = await fetchInit(`${baseUrl}/widget/theme`, {
     method: "GET",
     headers: {
       apiKey: apiKey,

@@ -1,3 +1,4 @@
+import { baseUrl } from "../config";
 import { ApiResponse } from "../types/api";
 import { BaseApiRequest } from "./baseApi";
 
@@ -10,7 +11,7 @@ export type RegisterUserResponseData = {
   id: string;
 };
 
-const baseApi = new BaseApiRequest('http://localhost:3000');
+const baseApi = new BaseApiRequest(baseUrl);
 
 export const registerUser = async (data: RegisterUserRequest, signal: AbortSignal) => {
     const response = await baseApi.post('/widget/register', data, signal);
