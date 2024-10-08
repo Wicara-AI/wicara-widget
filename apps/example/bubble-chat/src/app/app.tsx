@@ -6,9 +6,8 @@ const apiKey = import.meta.env.VITE_APP_API_KEY;
 const appId = import.meta.env.VITE_APP_APP_ID;
 const apiSecret = import.meta.env.VITE_APP_API_SECRET;
 
-console.log(apiSecret);
-
 export function App() {
+  console.log(apiSecret);
   return (
     <div>
       <NxWelcome title="example-bubble-chat" />

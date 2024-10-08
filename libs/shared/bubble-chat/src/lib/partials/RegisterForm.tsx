@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import RegisterButtonSubmit from '../components/forms/RegisterButtonSubmit'
 import TextInput from '../components/inputs/TextInput'
 import styles from './register-form.module.css'
@@ -6,10 +7,12 @@ import { useForm } from '../hooks/useForm'
 import { useEffect, useState } from 'react'
 import { registerUser } from '../utilities/api'
 import { useSession } from '../hooks/useSession'
+import { useRootContext } from '../context/RootContext'
 
 interface RegisterFormDto {
-  email: string
-  name: string
+  email: string;
+  name: string;
+  phone: string;
 }
 
 export default function RegisterForm() {
@@ -17,10 +20,11 @@ export default function RegisterForm() {
     initialValues: {
       email: '',
       name: '',
+      phone: '',
     },
-  })
+  });
 
-  const session = useSession()
+  const rootContext = useRootContext();
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -39,13 +43,18 @@ export default function RegisterForm() {
           {
             email: form.values.email,
             name: form.values.name,
+            session: rootContext!.apiHeaders.session,
+            phone: form.values.phone,
           },
+          rootContext!.apiHeaders,
           signal,
-        )
+        );
+
+        console.log(data, 'si dia');
       })()
 
       return () => {
-        controller.abort()
+        // controller.abort()
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -70,6 +79,15 @@ export default function RegisterForm() {
             name="name"
             type="text"
             onChange={(event) => form.setValue('name', event.target.value)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <FormLabel htmlFor="phone">Nomor Telpon</FormLabel>
+          <TextInput
+            id="phone"
+            name="phone"
+            type="text"
+            onChange={(event) => form.setValue('phone', event.target.value)}
           />
         </FormGroup>
         <div>

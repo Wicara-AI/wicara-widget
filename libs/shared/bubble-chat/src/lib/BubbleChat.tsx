@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { RootProvider } from './context/RootContext'
 import { Theme } from './types/theme'
-import { getThemeFromClient } from './utils/api'
 import BubbleButton, { BubbleButtonRef } from './components/BubbleButton'
 import BubbleDialog, {
   BubbleDialogButtonClose,
@@ -12,6 +11,7 @@ import BubbleDialog, {
 } from './components/BubbleDialog'
 import RegisterForm from './partials/RegisterForm'
 import { useSession } from './hooks/useSession'
+import { getThemeFromClient } from './utilities/api'
 
 export interface BubbleChatProps {
   appKey: string
@@ -24,14 +24,11 @@ export function BubbleChat({
   clientId,
   clientSecret,
 }: BubbleChatProps) {
-  const sessionId = document.cookie.replace(
-    /(?:(?:^|.*;\s*)sessionId\s*=\s*([^;]*).*$)|^.*$/,
-    '$1',
-  )
   const [isOpenDialogChat, setIsOpenDialogChat] = useState(false)
   const dialogChatRef = useRef<BubbleDialogRef>(null)
   const buttonChatRef = useRef<BubbleButtonRef>(null)
-  const session = useSession()
+  const session = useSession();
+  const sessionId = session.getSessionFromCookie();
 
   const [theme, setTheme] = useState<Theme>({
     primaryColor: '#000000',
@@ -52,6 +49,8 @@ export function BubbleChat({
     setIsOpenDialogChat(false)
   }
 
+  console.log(appKey, clientId, clientSecret, sessionId)
+
   // i want to get theme from api and handle it using useeffect with signal to prevent memory leak
   useEffect(() => {
     const controller = new AbortController()
@@ -60,11 +59,10 @@ export function BubbleChat({
       setTheme(
         await getThemeFromClient({
           apiKey: appKey,
-          clientId,
-          clientSecret,
-          sessionId: sessionId,
-          signal,
-        }),
+          appId: clientId,
+          apiSecret: clientSecret,
+          session: sessionId,
+        }, signal),
       )
     })()
 
@@ -81,6 +79,7 @@ export function BubbleChat({
         },
       })
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appKey, clientId, clientSecret])
 
   useEffect(() => {
@@ -90,7 +89,12 @@ export function BubbleChat({
 
   return (
     <div>
-      <RootProvider theme={theme} setTheme={setTheme}>
+      <RootProvider theme={theme} setTheme={setTheme} apiHeaders={{
+        apiKey: appKey,
+        apiSecret: clientSecret,
+        appId: clientId,
+        session: sessionId,
+      }}>
         <BubbleButton ref={buttonChatRef} onClick={showDialog}>
           <span>Chat</span>
         </BubbleButton>
