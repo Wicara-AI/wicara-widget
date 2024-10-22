@@ -37,10 +37,10 @@ export default function Register() {
     if (isSubmitting) {
       setIsSubmitting(false)
       const controller = new AbortController()
-      const signal = controller.signal
-      ;(async () => {
+      const signal = controller.signal;
+      const handleRegister = async () => {
         try {
-          const data = await registerUser(
+          await registerUser(
             {
               email: form.values.email,
               name: form.values.name,
@@ -57,11 +57,9 @@ export default function Register() {
           console.error('register failed');
         }
 
-      })()
-
-      return () => {
-        // controller.abort()
       }
+
+      handleRegister();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSubmitting])

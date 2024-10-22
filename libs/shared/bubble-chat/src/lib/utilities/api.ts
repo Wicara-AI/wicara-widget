@@ -1,5 +1,6 @@
 import { baseUrl } from "../config";
 import { ApiResponse, GetThemeResponseData } from "../types/api";
+import { Message } from "../types/message";
 import { ApiHeaders, BaseApiRequest } from './baseApi';
 
 export type RegisterUserRequest = {
@@ -58,6 +59,28 @@ export const getProfile = async (apiHeaders: ApiHeaders, signal: AbortSignal): P
   if (body.status === "fail" || response.ok === false) {
     throw new Error(body.message);
   }
+
+  return body.data;
+}
+
+export type GetMessageResponse = Message;
+
+export type GetMessageRequest = {
+  page: number;
+  limit: number;
+}
+
+export const getMessages = async (params: GetMessageRequest, apiHeaders: ApiHeaders, signal: AbortSignal): Promise<GetMessageResponse[]> => {
+  const searchParams = new URLSearchParams(params as unknown as Record<string, string>);
+  const response = await baseApi.get(`/widget/messages?${searchParams}`, apiHeaders, signal);
+
+  const body = await response.json() as ApiResponse<GetMessageResponse[]>;
+
+  if (body.status === "fail" || response.ok === false) {
+    throw new Error(body.message);
+  }
+
+  console.log('body', body);
 
   return body.data;
 }

@@ -7,7 +7,7 @@ export type TextInputRef = HTMLInputElement
 
 const TextInput = forwardRef(
   (props: TextInputProps, ref: Ref<TextInputRef>) => {
-    return <input ref={ref} {...props} className={styles['input']} />
+    return <input ref={ref} className={styles['input']} {...props} />
   },
 )
 
