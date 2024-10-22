@@ -1,1 +1,1 @@
-export * from './lib/BubbleChat';
+export * from './lib/Main';

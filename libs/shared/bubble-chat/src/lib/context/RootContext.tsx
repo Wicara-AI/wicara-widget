@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, Dispatch, useContext } from "react";
 import { Theme } from "../types/theme";
 import { ApiHeaders } from "../utilities/baseApi";
 
@@ -6,6 +6,8 @@ export type RootContextType = {
   theme: Theme;
   setTheme: (theme: Theme) => void;
   apiHeaders: ApiHeaders;
+  activeScreen: string;
+  setActiveScreen: Dispatch<string>;
 };
 
 export const RootContext = createContext<RootContextType | undefined>(undefined);
@@ -15,11 +17,13 @@ interface RootProviderProps {
   theme: Theme;
   setTheme: (theme: Theme) => void;
   apiHeaders: ApiHeaders;
+  activeScreen: string;
+  setActiveScreen: Dispatch<string>;
 }
 
-export const RootProvider = ({ children, theme, setTheme, apiHeaders }: RootProviderProps) => {
+export const RootProvider = ({ children, theme, setTheme, apiHeaders, activeScreen, setActiveScreen }: RootProviderProps) => {
 
-  return <RootContext.Provider value={{ theme, setTheme, apiHeaders }}>{children}</RootContext.Provider>;
+  return <RootContext.Provider value={{ theme, setTheme, apiHeaders, activeScreen, setActiveScreen }}>{children}</RootContext.Provider>;
 }
 
 export const useRootContext = () => {

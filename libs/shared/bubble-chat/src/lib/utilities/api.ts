@@ -13,8 +13,6 @@ export type RegisterUserResponseData = {
   id: string;
 };
 
-
-
 const baseApi = new BaseApiRequest(baseUrl);
 
 export const registerUser = async (data: RegisterUserRequest, apiHeaders: ApiHeaders, signal: AbortSignal) => {
@@ -45,3 +43,21 @@ export const getThemeFromClient = async (apiHeaders: ApiHeaders, signal: AbortSi
   return body.data;
 }
 
+export type GetProfileResponse = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+}
+
+export const getProfile = async (apiHeaders: ApiHeaders, signal: AbortSignal): Promise<GetProfileResponse> => {
+  const response = await baseApi.get(`/widget/me`, apiHeaders, signal);
+
+  const body = await response.json() as ApiResponse<GetProfileResponse>;
+
+  if (body.status === "fail" || response.ok === false) {
+    throw new Error(body.message);
+  }
+
+  return body.data;
+}

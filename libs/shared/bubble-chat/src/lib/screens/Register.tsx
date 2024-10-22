@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import RegisterButtonSubmit from '../components/forms/RegisterButtonSubmit'
 import TextInput from '../components/inputs/TextInput'
-import styles from './register-form.module.css'
+import styles from './register.module.css'
 import { FormGroup, FormLabel } from '../components/inputs/FormGroup'
 import { useForm } from '../hooks/useForm'
 import { useEffect, useState } from 'react'
 import { registerUser } from '../utilities/api'
-import { useSession } from '../hooks/useSession'
 import { useRootContext } from '../context/RootContext'
+import { screen } from '../configs/screenConfig'
 
 interface RegisterFormDto {
   email: string;
@@ -15,7 +15,7 @@ interface RegisterFormDto {
   phone: string;
 }
 
-export default function RegisterForm() {
+export default function Register() {
   const form = useForm<RegisterFormDto>({
     initialValues: {
       email: '',
@@ -29,7 +29,7 @@ export default function RegisterForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = (data: RegisterFormDto) => {
-    setIsSubmitting(true)
+    setIsSubmitting(true);
   }
 
   // request to register user using useEffect hook triggered by handleSubmit implement signal to prevent memory leak
@@ -39,18 +39,24 @@ export default function RegisterForm() {
       const controller = new AbortController()
       const signal = controller.signal
       ;(async () => {
-        const data = await registerUser(
-          {
-            email: form.values.email,
-            name: form.values.name,
-            session: rootContext!.apiHeaders.session,
-            phone: form.values.phone,
-          },
-          rootContext!.apiHeaders,
-          signal,
-        );
+        try {
+          const data = await registerUser(
+            {
+              email: form.values.email,
+              name: form.values.name,
+              session: rootContext!.apiHeaders.session,
+              phone: form.values.phone,
+            },
+            rootContext!.apiHeaders,
+            signal,
+          );
 
-        console.log(data, 'si dia');
+          rootContext?.setActiveScreen(screen.CHAT);
+
+        } catch (error: unknown) {
+          console.error('register failed');
+        }
+
       })()
 
       return () => {
