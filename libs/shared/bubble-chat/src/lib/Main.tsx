@@ -73,14 +73,14 @@ export function BubbleChat({
     const controller = new AbortController()
     const signal = controller.signal;
     const getTheme = async () => {
-      setTheme(
-        await getThemeFromClient({
-          apiKey: appKey,
-          appId: clientId,
-          apiSecret: clientSecret,
-          session: sessionId,
-        }, signal),
-      )
+      const theme = await getThemeFromClient({
+        apiKey: appKey,
+        appId: clientId,
+        apiSecret: clientSecret,
+        session: sessionId,
+      }, signal);
+
+      setTheme(theme);
     }
 
     getTheme();
@@ -90,7 +90,7 @@ export function BubbleChat({
   useEffect(() => {
     session.generateSessionIfNotAvailable();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
   return (
     <div>
@@ -113,7 +113,7 @@ export function BubbleChat({
             </BubbleDialogHeader>
             <BubbleDialogContent>
               {
-                screenConfig.filter((item) => item.root && item.id === activeScreen).map(({screen: Screen, mustAuth}, key: number) => (
+                screenConfig.filter((item) => item.id === activeScreen).map(({screen: Screen, mustAuth}, key: number) => (
                   <div key={key}>
                     {
                       mustAuth ? (
