@@ -12,9 +12,9 @@ import { setRoom } from '../utilities/room'
 import { setAuthToken } from '../utilities/authToken'
 
 interface RegisterFormDto {
-  email: string;
-  name: string;
-  phone: string;
+  email: string
+  name: string
+  phone: string
 }
 
 export default function Register() {
@@ -24,14 +24,14 @@ export default function Register() {
       name: '',
       phone: '',
     },
-  });
+  })
 
-  const {setActiveScreen, apiHeaders} = useRootContext();
+  const { setActiveScreen, apiHeaders } = useRootContext()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = (data: RegisterFormDto) => {
-    setIsSubmitting(true);
+    setIsSubmitting(true)
   }
 
   // request to register user using useEffect hook triggered by handleSubmit implement signal to prevent memory leak
@@ -39,7 +39,7 @@ export default function Register() {
     if (isSubmitting) {
       setIsSubmitting(false)
       const controller = new AbortController()
-      const signal = controller.signal;
+      const signal = controller.signal
       const handleRegister = async () => {
         try {
           const response = await registerUser(
@@ -51,18 +51,17 @@ export default function Register() {
             },
             apiHeaders,
             signal,
-          );
+          )
 
-          setRoom(response.conversationId, response.channelAccountId);
-          setActiveScreen(screen.CHAT);
-          setAuthToken(response.accessToken);
+          setRoom(response.conversationId, response.channelAccountId)
+          setActiveScreen(screen.CHAT)
+          setAuthToken(response.accessToken)
         } catch (error: unknown) {
-          console.error('register failed');
+          console.error('register failed')
         }
-
       }
 
-      handleRegister();
+      handleRegister()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSubmitting])

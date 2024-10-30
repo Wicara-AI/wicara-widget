@@ -1,15 +1,28 @@
-import { forwardRef, HtmlHTMLAttributes, PropsWithChildren, PropsWithRef, Ref } from 'react';
-import styles from '../styles/BubbleButton.module.css';
+import {
+  forwardRef,
+  HtmlHTMLAttributes,
+  PropsWithChildren,
+  PropsWithRef,
+  Ref,
+} from 'react'
+import styles from '../styles/BubbleButton.module.css'
 
-export type BubbleButtonProps = PropsWithRef<HtmlHTMLAttributes<HTMLButtonElement>>;
-export type BubbleButtonRef = HTMLButtonElement;
+export type BubbleButtonProps = PropsWithRef<
+  HtmlHTMLAttributes<HTMLButtonElement>
+>
+export type BubbleButtonRef = HTMLButtonElement
 
-const BubbleButton = forwardRef(({children,...props}: PropsWithChildren<BubbleButtonProps>, ref: Ref<BubbleButtonRef>) => {
-  return (
-    <button ref={ref} {...props} className={styles['button']}>
-      {children}
-    </button>
-  );
-});
+const BubbleButton = forwardRef(
+  (
+    { children, ...props }: PropsWithChildren<BubbleButtonProps>,
+    ref: Ref<BubbleButtonRef>,
+  ) => {
+    return (
+      <button ref={ref} {...props} className={styles['button']}>
+        {children}
+      </button>
+    )
+  },
+)
 
-export default BubbleButton;
+export default BubbleButton

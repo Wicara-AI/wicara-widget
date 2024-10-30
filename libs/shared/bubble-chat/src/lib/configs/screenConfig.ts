@@ -1,18 +1,18 @@
-import { FunctionComponent } from "react";
-import Register from "../screens/Register";
-import Chat from "../screens/Chat";
+import { FunctionComponent } from 'react'
+import Register from '../screens/Register'
+import Chat from '../screens/Chat'
 
 export type ScreenConfig = {
-  id: string;
-  screen: FunctionComponent;
-  root?: boolean;
-  mustAuth: boolean;
+  id: string
+  screen: FunctionComponent
+  root?: boolean
+  mustAuth: boolean
 }
 
 export const screen = {
   REGISTER: 'register',
   CHAT: 'chat',
-} as const;
+} as const
 
 export const screenConfig: ScreenConfig[] = [
   {

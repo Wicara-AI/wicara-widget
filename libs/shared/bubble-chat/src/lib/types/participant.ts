@@ -3,7 +3,7 @@ export const ParticipantModel = {
   User: 'user',
   Bot: 'bot',
   System: 'system',
-} as const;
+} as const
 
 export type ParticipantModel =
-  (typeof ParticipantModel)[keyof typeof ParticipantModel];
+  (typeof ParticipantModel)[keyof typeof ParticipantModel]

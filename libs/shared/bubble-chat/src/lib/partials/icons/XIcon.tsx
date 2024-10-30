@@ -1,9 +1,23 @@
-import { HTMLAttributes } from "react"
+import { HTMLAttributes } from 'react'
 
-type XIconProps = HTMLAttributes<SVGAElement>;
+type XIconProps = HTMLAttributes<SVGAElement>
 
-export default function XIcon({className}: XIconProps) {
+export default function XIcon({ className }: XIconProps) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
   )
 }

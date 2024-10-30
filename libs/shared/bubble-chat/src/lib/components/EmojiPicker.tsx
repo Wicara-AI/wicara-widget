@@ -1,11 +1,11 @@
-import styles from '../styles/EmojiPicker.module.css';
+import styles from '../styles/EmojiPicker.module.css'
 
 interface EmojiPickerProps {
-  onEmojiSelect: (emoji: string) => void;
+  onEmojiSelect: (emoji: string) => void
 }
 
 export const EmojiPicker = ({ onEmojiSelect }: EmojiPickerProps) => {
-  const commonEmojis = ['😊', '😂', '❤️', '👍', '🙌', '🎉', '🤔', '😅'];
+  const commonEmojis = ['😊', '😂', '❤️', '👍', '🙌', '🎉', '🤔', '😅']
 
   return (
     <div className={styles.container}>
@@ -21,5 +21,5 @@ export const EmojiPicker = ({ onEmojiSelect }: EmojiPickerProps) => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}

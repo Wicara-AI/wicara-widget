@@ -3,7 +3,7 @@
   flex-direction: column;
   height: 100%;
   overflow: auto;
-  gap: 10px;;
+  gap: 10px;
 }
 
 .gridItemRight {
@@ -12,5 +12,4 @@
 
 .gridItemLeft {
   align-self: start;
-
 }

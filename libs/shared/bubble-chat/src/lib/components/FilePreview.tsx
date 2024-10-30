@@ -1,16 +1,15 @@
-
 // components/FilePreview.tsx
-import { FilePreview as FilePreviewType } from '../types/chat';
-import styles from '../styles/FilePreview.module.css';
-import XIcon from '../partials/icons/XIcon';
+import { FilePreview as FilePreviewType } from '../types/chat'
+import styles from '../styles/FilePreview.module.css'
+import XIcon from '../partials/icons/XIcon'
 
 interface FilePreviewProps {
-  preview: FilePreviewType;
-  onRemove: (id: string) => void;
+  preview: FilePreviewType
+  onRemove: (id: string) => void
 }
 
 export const FilePreview = ({ preview, onRemove }: FilePreviewProps) => {
-  const isImage = preview.type.startsWith('image/');
+  const isImage = preview.type.startsWith('image/')
 
   return (
     <div className={styles.previewWrapper}>
@@ -37,5 +36,5 @@ export const FilePreview = ({ preview, onRemove }: FilePreviewProps) => {
       </div>
       <p className={styles.fileName}>{preview.name}</p>
     </div>
-  );
-};
+  )
+}

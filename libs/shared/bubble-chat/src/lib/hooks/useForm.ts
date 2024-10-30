@@ -11,16 +11,18 @@ export type SetValue<T> = (name: Name<T>, value: Value<T>) => void
 export type HandleChange = (e: React.ChangeEvent<HTMLInputElement>) => void
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type HandleSubmit= (callback: (values: any) => void) => (e: React.FormEvent) => void
+export type HandleSubmit = (
+  callback: (values: any) => void,
+) => (e: React.FormEvent) => void
 
 export type Reset = () => void
 
 export type UseForm<T> = {
-  values: T;
-  handleChange: HandleChange;
-  setValue: SetValue<T>;
-  handleSubmit: HandleSubmit;
-  reset: Reset;
+  values: T
+  handleChange: HandleChange
+  setValue: SetValue<T>
+  handleSubmit: HandleSubmit
+  reset: Reset
 }
 
 export type UseFormOptions<T> = {
@@ -41,10 +43,11 @@ export function useForm<T extends FormValues>({
     setValues((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (callback: (values: T) => void) => (e: React.FormEvent) => {
-    e.preventDefault()
-    callback(values)
-  }
+  const handleSubmit =
+    (callback: (values: T) => void) => (e: React.FormEvent) => {
+      e.preventDefault()
+      callback(values)
+    }
 
   const reset = () => {
     setValues(initialValues)
