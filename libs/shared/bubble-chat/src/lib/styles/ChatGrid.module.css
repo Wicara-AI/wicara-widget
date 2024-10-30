@@ -1,0 +1,16 @@
+.gridContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: auto;
+  gap: 10px;;
+}
+
+.gridItemRight {
+  align-self: end;
+}
+
+.gridItemLeft {
+  align-self: start;
+
+}

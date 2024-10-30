@@ -1,9 +1,9 @@
 import { PropsWithChildren } from "react";
-import styles from './chat-container.module.css';
+import styles from '../styles/ChatContainer.module.css';
 
 export default function ChatContainer({children}: PropsWithChildren) {
   return (
-    <div className={styles['chat-container']}>
+    <div className={styles.container}>
       {children}
     </div>
   )

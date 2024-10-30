@@ -1,5 +1,5 @@
 import { forwardRef, HtmlHTMLAttributes, PropsWithChildren, PropsWithRef, Ref } from 'react';
-import styles from './bubble-button.module.css';
+import styles from '../styles/BubbleButton.module.css';
 
 export type BubbleButtonProps = PropsWithRef<HtmlHTMLAttributes<HTMLButtonElement>>;
 export type BubbleButtonRef = HTMLButtonElement;

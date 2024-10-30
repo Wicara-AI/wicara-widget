@@ -5,7 +5,7 @@ import {
   PropsWithRef,
   Ref,
 } from 'react'
-import styles from './bubble-dialog.module.css'
+import styles from '../styles/BubbleDialog.module.css'
 
 export const BubbleDialogContent = forwardRef(
   (

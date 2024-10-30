@@ -1,5 +1,5 @@
 import { forwardRef, Ref } from 'react'
-import styles from './form-group.module.css'
+import styles from '../../styles/form-group.module.css'
 
 export type FormGroupProps = React.HTMLAttributes<HTMLDivElement>
 

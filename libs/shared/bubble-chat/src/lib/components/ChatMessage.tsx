@@ -1,15 +1,18 @@
-import { messageConfig, MessageProps } from "../configs/messageConfig";
-import { Message } from "../types/message";
+import { messageConfig } from "../configs/messageConfig";
+import { InboundMessage } from "../types/inboundMessage";
 import CardMessage from "./CardMessage";
 import MessageProfile from "./MessageProfile";
 
+type ChatMessageProps = {
+  data: InboundMessage;
+}
 
-export default function ChatMessage({data}: MessageProps<Message>) {
+export default function ChatMessage({data}: ChatMessageProps) {
   return (
     <CardMessage>
       <MessageProfile />
-      {messageConfig.filter((item) => item.type === data.type).map(({Component, type}) => (
-        <Component type={type} data={data} />
+      {messageConfig.filter((item) => item.type === data.type).map(({Component, type}, key) => (
+        <Component type={type} data={data} key={key} />
       ))}
     </CardMessage>
   )

@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react'
 import { registerUser } from '../utilities/api'
 import { useRootContext } from '../context/RootContext'
 import { screen } from '../configs/screenConfig'
+import { setRoom } from '../utilities/room'
+import { setAuthToken } from '../utilities/authToken'
 
 interface RegisterFormDto {
   email: string;
@@ -24,7 +26,7 @@ export default function Register() {
     },
   });
 
-  const rootContext = useRootContext();
+  const {setActiveScreen, apiHeaders} = useRootContext();
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -40,19 +42,20 @@ export default function Register() {
       const signal = controller.signal;
       const handleRegister = async () => {
         try {
-          await registerUser(
+          const response = await registerUser(
             {
               email: form.values.email,
               name: form.values.name,
-              session: rootContext!.apiHeaders.session,
+              session: apiHeaders.session,
               phone: form.values.phone,
             },
-            rootContext!.apiHeaders,
+            apiHeaders,
             signal,
           );
 
-          rootContext?.setActiveScreen(screen.CHAT);
-
+          setRoom(response.conversationId, response.channelAccountId);
+          setActiveScreen(screen.CHAT);
+          setAuthToken(response.accessToken);
         } catch (error: unknown) {
           console.error('register failed');
         }

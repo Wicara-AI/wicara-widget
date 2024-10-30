@@ -1,7 +1,7 @@
 import { MessageProps } from "../../configs/messageConfig";
-import { TextMessage as TextMessageType } from "../../types/message";
+import { InboundTextMessage } from "../../types/inboundMessage";
 
-export default function TextMessage({data}: MessageProps<TextMessageType>) {
+export default function TextMessage({data}: MessageProps<InboundTextMessage>) {
   return (
     <div>
       <p>{data.text.body}</p>

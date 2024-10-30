@@ -5,6 +5,13 @@ export type ApiHeaders = {
   session: string;
 };
 
+export class ApiError extends Error {
+  constructor(message: string, public status?: number) {
+    super(message);
+    this.name = 'ApiError';
+  }
+}
+
 export class BaseApiRequest {
     private baseUrl: string;
     constructor(baseUrl: string) {
@@ -12,8 +19,8 @@ export class BaseApiRequest {
     }
 
     public get = async (url: string, apiHeaders: ApiHeaders, signal?: AbortSignal) => {
-
-        return fetch(`${this.baseUrl}${url}`, {
+      try {
+        const response = await fetch(`${this.baseUrl}${url}`, {
             method: 'GET',
             headers: {
               'x-api-key': apiHeaders.apiKey,
@@ -24,20 +31,38 @@ export class BaseApiRequest {
             },
             signal,
         });
+
+        return response;
+      } catch (error) {
+      throw new ApiError('Network error occurred');
+
+      }
     };
 
-    public post = async <TData>(url: string, data: TData, apiHeaders: ApiHeaders, signal?: AbortSignal) => {
-        return fetch(`${this.baseUrl}${url}`, {
+    public post = async <TData extends BodyInit | Record<string, unknown>>(url: string, data: TData, headers: Record<string, unknown> & ApiHeaders, signal?: AbortSignal, options?: {
+      isFormData: boolean;
+    }) => {
+      try {
+        const { apiKey, apiSecret, appId, session, ...restHeaders } = headers;
+      const response = await fetch(`${this.baseUrl}${url}`, {
             method: 'POST',
             headers: {
-                'x-api-key': apiHeaders.apiKey,
-                'x-api-secret': apiHeaders.apiSecret,
-                'x-app-id': apiHeaders.appId,
-                'x-session': apiHeaders.session,
-                'Content-Type': 'application/json',
+              'Content-Type': 'application/json',
+              ...restHeaders,
+              'x-api-key': apiKey,
+              'x-api-secret': apiSecret,
+              'x-app-id': appId,
+              'x-session': session,
             },
-            body: JSON.stringify(data),
+            body: options?.isFormData ? data as BodyInit : JSON.stringify(data) as BodyInit,
             signal,
+            ...options,
         });
+
+        return response;
+      }
+    catch (error) {
+      throw new ApiError('Network error occurred');
+    }
     };
 }

@@ -1,7 +1,8 @@
 import { baseUrl } from "../config";
 import { ApiResponse, GetThemeResponseData } from "../types/api";
-import { Message } from "../types/message";
-import { ApiHeaders, BaseApiRequest } from './baseApi';
+import { InboundMessage } from "../types/inboundMessage";
+import { OutboundMessage } from "../types/outboundMessage";
+import { ApiError, ApiHeaders, BaseApiRequest } from './baseApi';
 
 export type RegisterUserRequest = {
   email: string;
@@ -11,7 +12,9 @@ export type RegisterUserRequest = {
 };
 
 export type RegisterUserResponseData = {
-  id: string;
+  conversationId: string;
+  channelAccountId: string;
+  accessToken: string;
 };
 
 const baseApi = new BaseApiRequest(baseUrl);
@@ -20,13 +23,13 @@ export const registerUser = async (data: RegisterUserRequest, apiHeaders: ApiHea
     const response = await baseApi.post('/widget/register', data, apiHeaders, signal);
 
     if (!response.ok) {
-        throw new Error('Failed to register user');
+        throw new ApiError('Failed to register user');
     }
 
     const body = await response.json() as ApiResponse<RegisterUserResponseData>;
 
     if (body.status === "fail") {
-        throw new Error(body.message);
+        throw new ApiError(body.message);
     }
 
     return body.data;
@@ -38,7 +41,7 @@ export const getThemeFromClient = async (apiHeaders: ApiHeaders, signal: AbortSi
   const body = await response.json() as ApiResponse<GetThemeResponseData>;
 
   if (body.status === "fail" || response.ok === false) {
-    throw new Error(body.message);
+    throw new ApiError(body.message);
   }
 
   return body.data;
@@ -57,13 +60,13 @@ export const getProfile = async (apiHeaders: ApiHeaders, signal: AbortSignal): P
   const body = await response.json() as ApiResponse<GetProfileResponse>;
 
   if (body.status === "fail" || response.ok === false) {
-    throw new Error(body.message);
+    throw new ApiError(body.message);
   }
 
   return body.data;
 }
 
-export type GetMessageResponse = Message;
+export type GetMessageResponse = InboundMessage;
 
 export type GetMessageRequest = {
   page: number;
@@ -77,10 +80,72 @@ export const getMessages = async (params: GetMessageRequest, apiHeaders: ApiHead
   const body = await response.json() as ApiResponse<GetMessageResponse[]>;
 
   if (body.status === "fail" || response.ok === false) {
-    throw new Error(body.message);
+    throw new ApiError(body.message);
   }
 
   console.log('body', body);
+
+  return body.data;
+}
+
+export const sendMessage = async (data: OutboundMessage, apiHeaders: ApiHeaders, signal: AbortSignal): Promise<void> => {
+    const response = await baseApi.post('/widget/message', data, apiHeaders, signal)
+
+    const body = await response.json() as ApiResponse;
+
+    if (!response.ok || body.status === 'fail') {
+      throw new ApiError('Failed to send message', response.status);
+    }
+
+    return;
+};
+
+export type UploadFileRequest = {
+  file: Blob | File;
+  fileName?: string;
+}
+
+export type UploadFileResponse = {
+  id: string;
+  name: string;
+  path: string;
+}
+
+export const uploadFile = async (
+  data: UploadFileRequest,
+  apiHeaders: ApiHeaders,
+  signal: AbortSignal
+): Promise<UploadFileResponse> => {
+  const formData = new FormData();
+
+  // Handle both Blob and File objects
+  if (data.file instanceof File) {
+    // If it's a File object, use it directly
+    formData.append('file', data.file);
+  } else {
+    // If it's a Blob, we need to ensure we have a filename
+    const fileName = data.fileName || 'blob-file';
+    formData.append('file', data.file, fileName);
+  }
+
+  const response = await baseApi.post(
+    '/widget/upload',
+    formData,
+    {
+      ...apiHeaders,
+      'Content-Type': 'multipart/form-data'
+    },
+    signal,
+    {
+      isFormData: true,
+    }
+  );
+
+  const body = await response.json() as unknown as ApiResponse<UploadFileResponse>;
+
+  if (response.ok === false || body.status === 'fail') {
+    throw new ApiError('Failed to upload file', response.status);
+  }
 
   return body.data;
 }

@@ -1,0 +1,73 @@
+.container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border-top: 1px solid #e5e7eb;
+  padding: 1rem;
+}
+
+.form {
+  max-width: 64rem;
+  margin: 0 auto;
+  position: relative;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem;
+}
+
+.iconButton {
+  padding: 0.5rem;
+  border-radius: 9999px;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.iconButton:hover {
+  background-color: #f3f4f6;
+}
+
+.fileInput {
+  display: none;
+}
+
+.textInput {
+  flex: 1;
+  outline: none;
+  padding: 0.25rem 0.5rem;
+  border: none;
+}
+
+.sendButton {
+  padding: 0.5rem;
+  border-radius: 9999px;
+  color: #3b82f6;
+}
+
+.sendButton:hover {
+  background-color: #eff6ff;
+}
+
+.sendButton:disabled {
+  opacity: 0.5;
+}
+
+.sendButton:disabled:hover {
+  background-color: transparent;
+}
+
+.previewContainer {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { createContext, Dispatch, PropsWithChildren, useContext, useState } from "react"
+import { Context, createContext, Dispatch, PropsWithChildren, useContext, useState } from "react"
 
 type User = {
   id: string;
@@ -9,17 +9,14 @@ type User = {
 };
 
 export type Auth = {
-  user?: User | null;
+  user: User | null;
   setUser: Dispatch<User>;
 }
 
-const authContext = createContext<Auth>({
-  user: null,
-  setUser: () => {},
-});
+const authContext = createContext<Auth | undefined>(undefined);
 
 export function AuthProvider({children}: PropsWithChildren) {
-  const [user, setUser] = useState<User | null>();
+  const [user, setUser] = useState<User | null>(null);
 
   return (
    <authContext.Provider value={{user, setUser}}>
@@ -29,6 +26,6 @@ export function AuthProvider({children}: PropsWithChildren) {
 }
 
 export const useAuth = () => {
-  return useContext<Auth>(authContext);
+  return useContext<Auth>(authContext as Context<Auth>);
 }
 

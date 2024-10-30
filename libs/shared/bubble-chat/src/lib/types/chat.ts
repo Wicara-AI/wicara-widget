@@ -1,15 +1,10 @@
-export interface AttachmentFile {
+// types/index.ts
+export interface FilePreview {
   id: string;
+  temporaryId: string | undefined;
   name: string;
-  size: number;
   type: string;
-  url?: string;
-}
-
-export interface EmojiData {
-  id: string;
-  native: string;
-  unified: string;
-  shortName: string;
-  category: string;
+  previewUrl: string;
+  isLoading: boolean;
+  error: string | null;
 }

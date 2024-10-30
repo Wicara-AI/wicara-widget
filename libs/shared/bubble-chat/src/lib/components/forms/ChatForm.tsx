@@ -1,126 +1,153 @@
-// ChatForm.tsx
-import React, { useState, useRef, ChangeEvent, KeyboardEvent, FormEvent } from 'react';
-import { ReactComponent as Send } from '../../assets/svgs/send.svg';
-import { ReactComponent as Paperclip } from '../../assets/svgs/paperclip.svg';
-import { ReactComponent as Smile } from '../../assets/svgs/smile.svg';
+import { useState, useRef } from 'react';
+import styles from '../../styles/ChatForm.module.css';
+import { useFilePreview } from '../../hooks/useFile';
+import { FilePreview } from '../FilePreview';
+import SmileIcon from '../../partials/icons/SmileIcon';
+import PaperclipIcon from '../../partials/icons/PaperclipIcon';
+import SendIcon from '../../partials/icons/SendIcon';
+import { EmojiPicker } from '../EmojiPicker';
+import { ALLOWED_FILE_TYPES, useSendMessage } from '../../hooks/useSendMessage';
+import { useRootContext } from '../../context/RootContext';
+import { OutboundMessageType } from '../../constants/outboundMessage';
 
-import styles from './ChatForm.module.css';
+export const ChatForm = () => {
+  const [message, setMessage] = useState('');
+  const [showEmojis, setShowEmojis] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-interface ChatFormProps {
-  onSendMessage?: (message: string) => void;
-  maxRows?: number;
-  placeholder?: string;
-  disabled?: boolean;
-  className?: string;
-}
+  const { apiHeaders } = useRootContext();
+  const { previews, addFiles, removeFile } = useFilePreview({ apiHeaders });
+  const { sendMessage, sending, error } = useSendMessage({ apiHeaders });
 
-interface TextAreaRef extends HTMLTextAreaElement {
-  rows: number;
-}
+  const determineMessageType = (files: typeof previews): OutboundMessageType => {
+    if (files.length === 0) return 'text';
 
-const ChatForm: React.FC<ChatFormProps> = ({
-  onSendMessage,
-  maxRows = 5,
-  placeholder = "Type a message...",
-  disabled = false,
-  className = ''
-}) => {
-  const [message, setMessage] = useState<string>('');
-  const [rows, setRows] = useState<number>(1);
-  const textAreaRef = useRef<TextAreaRef>(null);
+    const firstFileType = files[0].type;
+    if (firstFileType.startsWith('image/')) return 'image';
+    if (firstFileType.startsWith('video/')) return 'video';
+    if (firstFileType.startsWith('audio/')) return 'audio';
+    if (firstFileType.startsWith('application/')) return 'document';
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+    return 'unsupported';
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (message.trim() && !disabled) {
-      onSendMessage?.(message.trim());
+
+    if (!message.trim() && previews.length === 0) return;
+
+    try {
+      const messageType = determineMessageType(previews);
+
+      await sendMessage(
+        message.trim(),
+        messageType,
+        {
+          files: previews
+        }
+      );
+
+      // Clear form after successful send
       setMessage('');
-      setRows(1);
+      previews.forEach(p => removeFile(p.id));
+
+    } catch (error) {
+      console.error('Failed to send message:', error);
+      // You might want to show an error toast or notification here
     }
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>): void => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      const form = e.currentTarget.form;
-      if (form) {
-        handleSubmit(e as unknown as FormEvent<HTMLFormElement>);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      // Filter files based on allowed types
+      const validFiles = Array.from(files).filter(file =>
+        ALLOWED_FILE_TYPES.includes(file.type)
+      );
+
+      if (validFiles.length !== files.length) {
+        // You might want to show a warning about invalid file types
+        console.warn('Some files were skipped due to unsupported file types');
+
+        return;
+      }
+
+      addFiles(files);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
       }
     }
   };
 
-  const calculateRows = (scrollHeight: number, lineHeight = 24): number => {
-    return Math.min(Math.floor(scrollHeight / lineHeight), maxRows);
-  };
-
-  const handleInput = (e: ChangeEvent<HTMLTextAreaElement>): void => {
-    const textarea = textAreaRef.current;
-    if (!textarea) return;
-
-    setMessage(e.target.value);
-    textarea.rows = 1;
-
-    const newRows = calculateRows(textarea.scrollHeight);
-    setRows(newRows);
-  };
-
-  const handlePaperclipClick = (): void => {
-    // Implement file attachment logic
-    console.log('Attach file clicked');
-  };
-
-  const handleEmojiClick = (): void => {
-    // Implement emoji picker logic
-    console.log('Emoji picker clicked');
+  const addEmoji = (emoji: string) => {
+    setMessage(prev => prev + emoji);
   };
 
   return (
-    <div className={`${styles.container} ${className}`}>
+    <div className={styles.container}>
       <form onSubmit={handleSubmit} className={styles.form}>
+        {error && (
+          <div className={styles.errorMessage}>
+            {error}
+          </div>
+        )}
+
+        {previews.length > 0 && (
+          <div className={styles.previewContainer}>
+            {previews.map(preview => (
+              <FilePreview
+                key={preview.id}
+                preview={preview}
+                onRemove={removeFile}
+              />
+            ))}
+          </div>
+        )}
+
         <div className={styles.inputWrapper}>
           <button
             type="button"
+            onClick={() => setShowEmojis(!showEmojis)}
             className={styles.iconButton}
-            onClick={handlePaperclipClick}
-            disabled={disabled}
           >
-            <Paperclip className={styles.icon} />
+            <SmileIcon className="w-5 h-5" />
           </button>
 
-          <textarea
-            ref={textAreaRef}
+          <label className={styles.iconButton}>
+            <PaperclipIcon className="w-5 h-5" />
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              onChange={handleFileChange}
+              className={styles.fileInput}
+              accept={ALLOWED_FILE_TYPES.join(',')}
+            />
+          </label>
+
+          <input
+            type="text"
             value={message}
-            onChange={handleInput}
-            onKeyDown={handleKeyDown}
-            rows={rows}
-            placeholder={placeholder}
-            className={styles.textarea}
-            disabled={disabled}
-            aria-label="Message input"
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Type a message..."
+            className={styles.textInput}
+            disabled={sending}
           />
 
           <button
-            type="button"
-            className={styles.iconButton}
-            onClick={handleEmojiClick}
-            disabled={disabled}
-          >
-            <Smile className={styles.icon} />
-          </button>
-
-          <button
             type="submit"
-            disabled={!message.trim() || disabled}
-            className={`${styles.sendButton} ${(!message.trim() || disabled) ? styles.disabled : ''}`}
-            aria-label="Send message"
+            disabled={(!message.trim() && previews.length === 0) || sending}
+            className={`${styles.sendButton} ${sending ? styles.sending : ''}`}
           >
-            <Send className={styles.sendIcon} />
+            <SendIcon className="w-5 h-5" />
           </button>
         </div>
+
+        {showEmojis && <EmojiPicker onEmojiSelect={addEmoji} />}
       </form>
     </div>
   );
 };
 
-// Optional: Export type definitions if they'll be used elsewhere
-export type { ChatFormProps };
 export default ChatForm;

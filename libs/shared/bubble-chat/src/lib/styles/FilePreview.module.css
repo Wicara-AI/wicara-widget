@@ -1,0 +1,59 @@
+
+.previewWrapper {
+  position: relative;
+}
+
+.previewWrapper:hover .removeButton {
+  opacity: 1;
+}
+
+.previewCard {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  background-color: #f9fafb;
+}
+
+.previewImage {
+  width: 5rem;
+  height: 5rem;
+  object-fit: cover;
+  border-radius: 0.25rem;
+}
+
+.genericPreview {
+  width: 5rem;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f3f4f6;
+  border-radius: 0.25rem;
+}
+
+.fileExtension {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.removeButton {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  background-color: #ef4444;
+  color: white;
+  border-radius: 9999px;
+  padding: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.fileName {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  color: #6b7280;
+  width: 5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

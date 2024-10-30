@@ -1,22 +1,21 @@
 import { FunctionComponent } from "react"
 import TextMessage from "../components/messages/TextMessage";
-import { MessageType } from "../constants/message";
-import { Message } from "../types/message";
-
+import { InboundMessage } from "../types/inboundMessage";
+import { InboundMessageType } from "../constants/inboundMessage";
 
 type MessageConfig = {
-  type: MessageType;
-  Component: FunctionComponent<MessageProps<Message>>;
+  type: InboundMessageType;
+  Component: FunctionComponent<MessageProps<InboundMessage>>;
 };
 
 export type MessageProps<T> = {
-  type: MessageType;
+  type: InboundMessageType;
   data: T
 };
 
 export const messageConfig: MessageConfig[] = [
   {
-    type: MessageType.TEXT,
-    Component: TextMessage,
+    type: InboundMessageType.TEXT,
+    Component: TextMessage as FunctionComponent<MessageProps<InboundMessage>>,
   }
 ];

@@ -1,0 +1,28 @@
+
+
+.container {
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: 0.5rem;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.emojiGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.emojiButton {
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.emojiButton:hover {
+  background-color: #f3f4f6;
+}

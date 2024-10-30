@@ -1,5 +1,5 @@
 import { forwardRef, PropsWithChildren, Ref } from "react";
-import styles from './register-button-submit.module.css';
+import styles from '../../styles/register-button-submit.module.css';
 
 export type RegisterButtonSubmitProps = {
   children: React.ReactNode;
